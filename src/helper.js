@@ -32,7 +32,7 @@ export const getBestMove = (cells, player, move) => {
     let curMove = [-1, -inf];
     let winner = null;
 
-    if(move >= 8){
+    if(move === 8){//in Algo.js line 58 calling getBestMove only if move <= 8
         for(let i = 0;i < 9;i++){
             if(cells[i] === ''){
                 cells[i] = player;
@@ -56,7 +56,7 @@ export const getBestMove = (cells, player, move) => {
                 curMove[0] = i;
                 winner = getWinner(cells);
                 if(winner !== null)
-                    curMove[1] = (winner === player) ? 1 : -1;
+                    curMove[1] = (winner === player) ? (9-move) : -(9-move);
                 else
                     curMove[1] = -(getBestMove(cells, (player === 'X' ? 'O':'X'), move + 1)[1]);
 
