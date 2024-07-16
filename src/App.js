@@ -6,7 +6,7 @@ import Main from './Main.js';
 function App() {
   const [ user, setUser ] = useState([]);
   const [ profile, setProfile ] = useState({});
-  
+
   const login = useGoogleLogin({
       onSuccess: (codeResponse) => setUser(codeResponse),
       onError: (error) => console.log('Login Failed:', error)
@@ -29,6 +29,29 @@ function App() {
           }
       },
       [ user ]
+  );
+
+  useEffect(
+    () => {
+      const callAPI = async () => {
+        if(profile && Object.keys(profile).length > 0){
+          const api_url = "https://backend-tic-tac-toe-phb3.onrender.com/api/users";
+          try {
+            await axios.post(api_url, {
+                name: profile.name,
+                email: profile.email
+            });
+            console.log("APP__useEffect [profile]: api called");
+  
+          } catch (error) {
+              console.log('APP_handleUserLogin: error in api call', error);
+          }
+        }
+      }
+      callAPI();
+
+    },
+    [profile]
   );
 
   // log out function to log the user out of google and set the profile array to null
